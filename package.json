@@ -12,6 +12,7 @@
     "url": "https://github.com/omaralsayed/ceas-reimbursement"
   },
   "dependencies": {
+    "lodash.template": "^4.5.0",
     "npm": "^6.13.7"
   },
   "devDependencies": {
