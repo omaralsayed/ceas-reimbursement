@@ -1,66 +1,28 @@
 import getInfo from './info-view.js';
-import reserveTicket from './reserve.js';
+import sendRequest from './reserve.js';
 
 getInfo();
 
-/**
-const birthdayInput = document.querySelector('.intro #birth-date');
-const phoneNumberInput = document.querySelector('.intro #phone-number');
- * Adds forward slashes for the birth date input
- * @param {object} event - The action for key up
-birthdayInput.onkeyup = function onBirthdayInputType(event) {
-  if ((birthdayInput.value.length === 2 || birthdayInput.value.length === 5)
-  && birthdayInput.value !== ''
-  && event.key !== 'Backspace') {
-    birthdayInput.value += '/';
-  }
-};
-/**
- * Adds '-' for the phone number input
- * @param {object} event - The action for key up
-phoneNumberInput.onkeyup = function onPhoneNumberInputType(event) {
-  if ((phoneNumberInput.value.length === 3 || phoneNumberInput.value.length === 7)
-  && phoneNumberInput.value !== ''
-  && event.key !== 'Backspace') {
-    phoneNumberInput.value += '-';
-  }
-};
-const formName = document.querySelector('.intro #name');
-const formPhone = document.querySelector('.intro #phone-number');
-const formEmail = document.querySelector('.intro #email');
-const formDateOfBirth = document.querySelector('.intro #birth-date');
-const formTransactionImage = document.querySelector('.intro #venmo-image');
-const formBusWaiver = document.querySelector('.intro #bus-waiver');
-const formBusWaiverText = document.querySelector('.intro .file-text-docs ');
-const formTransactionText = document.querySelector('.intro .file-text-receipt');
-*/
 const formSubmitButton = document.querySelector('.intro #submit-button');
 const formBudgetedExpenseYes = document.querySelector('.intro #budgeted-expense-yes');
 const formBudgetedExpenseNo = document.querySelector('.intro #budgeted-expense-no');
-const formOfficerName = document.querySelector('.intro #officer-name');
-const formOfficerPosition = document.querySelector('.intro #officer-position');
-const formDirectDeposit = document.querySelector('.intro #direct-deposit');
+const formOfficerName = document.querySelector('.intro #officerName');
+const formOfficerPosition = document.querySelector('.intro #officerPosition');
+const formDirectDeposit = document.querySelector('.intro #directDeposit');
 const formCheck = document.querySelector('.intro #check');
 const formAddress = document.querySelector('.intro #address');
 
-/**
- * Changes the text of the file upload to the name of the file
-formBusWaiver.onchange = function formBusWaiverOnChange() {
+receiptImage.onchange = function receiptImageOnChange() {
   let fileName = '';
   fileName = this.files[0].name;
-  formBusWaiverText.textContent = fileName;
+  receiptImage.textContent = fileName;
 };
-/**
- * Changes the text of the file upload to the name of the file
-formTransactionImage.onchange = function formTransactionImageOnChange() {
+
+documentsFile.onchange = function documentsFileOnChange() {
   let fileName = '';
   fileName = this.files[0].name;
-  formTransactionText.textContent = fileName;
+  documentsFile.textContent = fileName;
 };
-*/
-/**
- * Submit form when submit button is clicked
- */
 
 formBudgetedExpenseYes.onclick = function formBudgetedExpenseYesButtonOnclick() {
   formOfficerName.style.visibility = 'hidden';
@@ -114,13 +76,22 @@ formCheck.onclick = function formBudgetedExpenseNoButtonOnclick() {
   formAddress.style.padding = '12px 0px';
 };
 
-// formSubmitButton.onclick = function formSubmitButtonOnclick() {
-//   reserveTicket(
-//     formName,
-//     formEmail,
-//     formPhone,
-//     formDateOfBirth,
-//     formTransactionImage,
-//     formBusWaiver,
-//   );
-// };
+formSubmitButton.onclick = function formSubmitButtonOnclick() {
+  sendRequest(
+    username,
+    position,
+    userEmail,
+    userId,
+    appDate,
+    appVendor,
+    appAmount,
+    appDescription,
+    officerName,
+    officerPosition,
+    directDeposit,
+    check,
+    receiptImage,
+    documentsFile,
+    address
+  );
+};
