@@ -28,14 +28,14 @@ $direct = false;
 $receipt = '';
 $docs = '';
 
-$name = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['nameText'])));
-$position = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['positionText'])));
+$name = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['username'])));
+$position = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['position'])));
 $email = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['emailText'])));
-$mId = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['mIdText'])));
-$date = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['dateText'])));
-$vendor = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['vendorText'])));
-$amount = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['amountText'])));
-$description = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['descriptionText'])));
+$mId = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['userId'])));
+$date = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['appDate'])));
+$vendor = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['appVendor'])));
+$amount = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['appAmount'])));
+$description = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['appDescription'])));
 $budgeted = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['budgetedBool'])));
 $direct = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['directBool'])));
 $receipt = $_FILES['receiptFile'];
@@ -178,14 +178,14 @@ if ($admin_email === '' || $admin_name === '' || $super_email === '') {
     die();
 }
 
-$name = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['nameText'])));
-$position = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['positionText'])));
+$name = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['username'])));
+$position = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['position'])));
 $email = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['emailText'])));
-$mId = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['mIdText'])));
-$date = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['dateText'])));
-$vendor = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['vendorText'])));
-$amount = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['amountText'])));
-$description = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['descriptionText'])));
+$mId = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['userId'])));
+$date = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['appDate'])));
+$vendor = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['appVendor'])));
+$amount = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['appAmount'])));
+$description = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['appDescription'])));
 $budgeted = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['budgetedBool'])));
 $direct = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['directBool'])));
 $receipt = $_FILES['receiptFile'];
