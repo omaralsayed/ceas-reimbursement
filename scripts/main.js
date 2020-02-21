@@ -6,9 +6,9 @@ getInfo();
 const formSubmitButton = document.querySelector('.intro #submit-button');
 const formBudgetedExpenseYes = document.querySelector('.intro #budgeted-expense-yes');
 const formBudgetedExpenseNo = document.querySelector('.intro #budgeted-expense-no');
-const formOfficerName = document.querySelector('.intro #officerName');
-const formOfficerPosition = document.querySelector('.intro #officerPosition');
-const formDirectDeposit = document.querySelector('.intro #directDeposit');
+const formOfficerName = document.querySelector('.intro #officer-name');
+const formOfficerPosition = document.querySelector('.intro #officer-position');
+const formDirectDeposit = document.querySelector('.intro #direct-deposit');
 const formCheck = document.querySelector('.intro #check');
 const formAddress = document.querySelector('.intro #address');
 
