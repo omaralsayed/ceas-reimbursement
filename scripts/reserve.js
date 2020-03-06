@@ -6,6 +6,7 @@ import displayWarning from './warning-view.js';
  * @returns {boolean} If the field is missing.
  */
 const checkField = function checkForMissingField(field) {
+  console.log(field);
   let isFieldMissing = false;
 
   if (field.value === '') {
@@ -53,15 +54,12 @@ const checkFile = function checkFileMissing(fileField) {
  * @returns {boolean} If any of the fields are missing.
  */
 const validateData = function validateDataForMissingValues(
-  name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs,
-) {
+  name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
   let isFieldMissing = false;
   const missingItems = [];
 
   missingItems.push(checkField(name));
   missingItems.push(checkField(email));
-  missingItems.push(checkFile(transactionImage));
-  missingItems.push(checkFile(busWavier));
 
   if (missingItems.includes(true)) {
     isFieldMissing = true;
@@ -87,8 +85,7 @@ const validateData = function validateDataForMissingValues(
  * @param {Element} docs - The docs field to validate and send.
  */
 const sendRequest = function sendRequestData(
-  name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs,
-) {
+  name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
   const formSubmitButton = document.querySelector('.intro #submit-button');
   const formLoader = document.querySelector('.intro .loader');
   formSubmitButton.style.display = 'none';
@@ -97,8 +94,7 @@ const sendRequest = function sendRequestData(
   const submissionData = {
     nameText: name.value,
     emailText: email.value,
-    transactionImageFile: transactionImage.files[0],
-    busWavierFile: busWavier.files[0],
+    // busWavierFile: busWavier.files[0],
   };
 
   const submissionFormData = new FormData();
