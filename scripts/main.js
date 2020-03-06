@@ -1,5 +1,5 @@
 // import getInfo from './info-view.js';
-// import sendRequest from './reserve.js';
+import sendRequest from './reserve.js';
 
 // getInfo();
 
@@ -10,9 +10,25 @@ const formOfficerPosition = document.querySelector('.intro #officer-position');
 const formDirectDeposit = document.querySelector('.intro #direct-deposit');
 const formCheck = document.querySelector('.intro #check');
 const formAddress = document.querySelector('.intro #address');
-const receiptImage = document.querySelector('.intro #receipt-image');
-const documentsFile = document.querySelector('.intro #supporting-documents');
+const formReceiptImage = document.querySelector('.intro #receipt-image');
+const formDocumentsFile = document.querySelector('.intro #supporting-documents');
 const formSubmitButton = document.querySelector('.intro #submit-button');
+
+const username = document.getElementById('name');
+const position = document.getElementById('position');
+const email = document.getElementById('email');
+const userId = document.getElementById('mId');
+const appDate = document.getElementById('date');
+const appVendor = document.getElementById('vendor');
+const appAmount = document.getElementById('amount');
+const appDescription = document.getElementById('description');
+const officerName = document.getElementById('officer-name');
+const officerPosition = document.getElementById('officer-position');
+const directDeposit = document.getElementById('direct-deposit');
+const check = document.getElementById('check');
+const address = document.getElementById('address');
+const receiptImage = document.getElementById('receipt-image');
+const supportingDocuments = document.getElementById('supporting-documents');
 
 formBudgetedExpenseYes.onclick = function formBudgetedExpenseYesButtonOnclick() {
   formOfficerName.style.visibility = 'hidden';
@@ -66,34 +82,19 @@ formCheck.onclick = function formBudgetedExpenseNoButtonOnclick() {
   formAddress.style.padding = '12px 0px';
 };
 
-receiptImage.onchange = function receiptImageOnChange() {
+formReceiptImage.onchange = function receiptImageOnChange() {
   let fileName = '';
   fileName = this.files[0].name;
-  receiptImage.textContent = fileName;
+  formReceiptImage.textContent = fileName;
 };
 
-documentsFile.onchange = function documentsFileOnChange() {
+formDocumentsFile.onchange = function documentsFileOnChange() {
   let fileName = '';
   fileName = this.files[0].name;
-  documentsFile.textContent = fileName;
+  formDocumentsFile.textContent = fileName;
 };
 
 formSubmitButton.onclick = function formSubmitButtonOnclick() {
-  sendRequest(
-    username,
-    position,
-    userEmail,
-    userId,
-    appDate,
-    appVendor,
-    appAmount,
-    appDescription,
-    officerName,
-    officerPosition,
-    directDeposit,
-    check,
-    receiptImage,
-    documentsFile,
-    address
-  );
+  sendRequest(username, position, email, userId, appDate, appVendor, appAmount,
+    appDescription, officerName, officerPosition, directDeposit, check, receiptImage, supportingDocuments, address);
 };
