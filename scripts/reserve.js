@@ -53,13 +53,22 @@ const checkFile = function checkFileMissing(fileField) {
  * @param {Element} docs - The docs field to validate.
  * @returns {boolean} If any of the fields are missing.
  */
-const validateData = function validateDataForMissingValues(
-  name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
+const validateData = function validateDataForMissingValues(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
   let isFieldMissing = false;
   const missingItems = [];
 
-  missingItems.push(checkField(name));
-  missingItems.push(checkField(email));
+  // missingItems.push(checkField(name));
+  // missingItems.push(checkField(position));
+  // missingItems.push(checkField(email));
+  // missingItems.push(checkField(mId));
+  // missingItems.push(checkField(date));
+  // missingItems.push(checkField(vendor));
+  // missingItems.push(checkField(amount));
+  // missingItems.push(checkField(description));
+  // missingItems.push(checkField(budgeted));
+  // missingItems.push(checkField(direct));
+  // missingItems.push(checkField(receipt));
+  // missingItems.push(checkField(docs));
 
   if (missingItems.includes(true)) {
     isFieldMissing = true;
@@ -84,17 +93,53 @@ const validateData = function validateDataForMissingValues(
  * @param {Element} receipt - The receipt field to validate and send.
  * @param {Element} docs - The docs field to validate and send.
  */
-const sendRequest = function sendRequestData(
-  name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
+const sendRequest = function sendRequestData(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
+  let officerName = '';
+  let officerPosition = '';
+
   const formSubmitButton = document.querySelector('.intro #submit-button');
   const formLoader = document.querySelector('.intro .loader');
+
+  const formOfficerName = document.querySelector('.intro #officer-name');
+  const formOfficerPosition = document.querySelector('.intro #officer-position');
+  const formAddress = document.querySelector('.intro #address');
+
+  const formReceipt = document.querySelector('.intro #receipt-image');
+  const formSupport = document.querySelector('.intro #supporting-documents');
+
   formSubmitButton.style.display = 'none';
   formLoader.style.display = 'block';
 
+  if (formOfficerName.style.visibility == 'hidden') {
+    budgeted = 'Budgeted';
+  } else {
+    budgeted = 'Not budgeted';
+    officerName = formOfficerName.value;
+    officerPosition = formOfficerPosition.value;
+  }
+  
+  if (formAddress.style.visibility == 'hidden') {
+    direct = 'Direct Deposit';
+  } else {
+    direct = 'Mail';
+  }
+
   const submissionData = {
-    nameText: name.value,
-    emailText: email.value,
-    // busWavierFile: busWavier.files[0],
+    name: name.value,
+    position: position.value,
+    email: email.value,
+    mId: mId.value,
+    date: date.value,
+    vendor: vendor.value,
+    amount: amount.value,
+    description: description.value,
+    budgetedExpenseYes: budgeted,
+    directDeposit: direct,
+    officerName: officerName,
+    officerPosition: officerPosition,
+    address: formAddress.value,
+    receipt: formReceipt.files[0],
+    docs: formSupport.files[0]
   };
 
   const submissionFormData = new FormData();
@@ -141,9 +186,7 @@ const sendRequest = function sendRequestData(
  * @param {Element} receipt - The receipt field to validate and send.
  * @param {Element} docs - The docs field to validate and send.
  */
-export default function reserveTicket(
-  name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs,
-) {
+export default function reserveTicket(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
   const isMissing = validateData(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs);
   if (!isMissing) {
     sendRequest(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs);

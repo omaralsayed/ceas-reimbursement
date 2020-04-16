@@ -1,7 +1,4 @@
-// import getInfo from './info-view.js';
 import sendRequest from './reserve.js';
-
-// getInfo();
 
 const formBudgetedExpenseYes = document.querySelector('.intro #budgeted-expense-yes');
 const formBudgetedExpenseNo = document.querySelector('.intro #budgeted-expense-no');
@@ -14,14 +11,14 @@ const formReceiptImage = document.querySelector('.intro #receipt-image');
 const formDocumentsFile = document.querySelector('.intro #supporting-documents');
 const formSubmitButton = document.querySelector('.intro #submit-button');
 
-const username = document.getElementById('name');
+const name = document.getElementById('name');
 const position = document.getElementById('position');
 const email = document.getElementById('email');
-const userId = document.getElementById('mId');
-const appDate = document.getElementById('date');
-const appVendor = document.getElementById('vendor');
-const appAmount = document.getElementById('amount');
-const appDescription = document.getElementById('description');
+const mId = document.getElementById('mId');
+const date = document.getElementById('date');
+const vendor = document.getElementById('vendor');
+const amount = document.getElementById('amount');
+const description = document.getElementById('description');
 const officerName = document.getElementById('officer-name');
 const officerPosition = document.getElementById('officer-position');
 const directDeposit = document.getElementById('direct-deposit');
@@ -29,6 +26,8 @@ const check = document.getElementById('check');
 const address = document.getElementById('address');
 const receiptImage = document.getElementById('receipt-image');
 const supportingDocuments = document.getElementById('supporting-documents');
+
+const xmlHttp = new XMLHttpRequest();
 
 formBudgetedExpenseYes.onclick = function formBudgetedExpenseYesButtonOnclick() {
   formOfficerName.style.visibility = 'hidden';
@@ -85,16 +84,28 @@ formCheck.onclick = function formBudgetedExpenseNoButtonOnclick() {
 formReceiptImage.onchange = function receiptImageOnChange() {
   let fileName = '';
   fileName = this.files[0].name;
-  formReceiptImage.textContent = fileName;
+  document.getElementById('upload-receipt-text').innerText = ' ' + fileName;
 };
 
 formDocumentsFile.onchange = function documentsFileOnChange() {
   let fileName = '';
   fileName = this.files[0].name;
-  formDocumentsFile.textContent = fileName;
+  document.getElementById('upload-doc-text').innerText = ' ' + fileName;
 };
 
+/**
+ * Update tag text with response
+ */
+xmlHttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    document.getElementById('admin-email').innerText = this.response.replace(/['"]+/g, '');
+  }
+};
+
+xmlHttp.open('GET', '../api/get_info.php', true);
+xmlHttp.send();
+
 formSubmitButton.onclick = function formSubmitButtonOnclick() {
-  sendRequest(username, position, email, userId, appDate, appVendor, appAmount,
-    appDescription, officerName, officerPosition, directDeposit, check, receiptImage, supportingDocuments, address);
+  sendRequest(name, position, email, mId, date, vendor, amount, description, officerName, officerPosition,
+    directDeposit, check, receiptImage, supportingDocuments, address);
 };
