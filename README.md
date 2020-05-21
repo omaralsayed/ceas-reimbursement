@@ -6,6 +6,8 @@ The reimbursement form allows students to submit reimbursement requests to the [
 The form's data such as the student's information, expenditure information, and supporting files will be sent to the treasurer's email. The data will be stored in a database table along with other information such as the date of the request.
 
 ## Overview
+Snippet of the file upload section
+
 ![CEAS Reimbursement Overview](images/overview.PNG)
 
 ## Getting Started 🚀
@@ -55,7 +57,7 @@ For production, you will need to provide the missing constants and update the da
 13. Open up the htdocs directory in VS Code to start developing.
 14. To see the webpage, click on "Open WebStart page" from the MAMP Server and click on "My Website".
 
-### Making changes
+### Making Changes
 1. Make your desired change.
 2. Make sure to either run `gulp dev` or `gulp watch`.
 3. Visit the webpage and clear browser cache (<kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>r</kbd> or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>r</kbd>).
