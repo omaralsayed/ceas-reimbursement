@@ -1,5 +1,9 @@
+/* Google Fonts API Imports */
+
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300');
+
+/* General */
 
 html {
   scroll-behavior: smooth;
@@ -18,9 +22,12 @@ body {
   margin: 0 auto;
 }
 
+/* Form */
+
 .intro {
   min-height: 100vh;
-  background: #cb2d3e center;
+  background: #cb2d3e center; /* Fallback for old browsers */
+  background: linear-gradient(to top, #ef473a, #cb2d3e), url(../images/lindner.jpg); /* W3C */
   background-size: cover;
   background-blend-mode: darken;
   padding-bottom: 20px;
@@ -378,6 +385,8 @@ footer p:nth-of-type(2) {
 .warning .close:hover {
   color: #80d8ff;
 }
+
+/* Loading symbol from loading.io */
 
 .lds-ellipsis {
   display: none;
