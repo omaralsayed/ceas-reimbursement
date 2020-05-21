@@ -13,11 +13,13 @@ require_once('PHPMailer/PHPMailer.php');
 DEFINE('RECEIPT_MAX_FILE_SIZE', 6);
 DEFINE('ATTENDANCE_MAX_FILE_SIZE', 6);
 
+// Initialize member variables
 $name  = '';
 $position  = '';
 $email = '';
-$mId  = '';
+$m_id  = '';
 
+// Initialize expenditure variables
 $date = '';
 $vendor = '';
 $amount = '';
@@ -25,22 +27,24 @@ $description = '';
 $budgeted = false;
 $direct = false;
 
+// Initialize document variables
 $receipt = '';
 $docs = '';
 
 $name = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['name'])));
 $position = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['position'])));
 $email = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['email'])));
-$mId = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['mId'])));
+$m_id = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['mId'])));
 $date = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['date'])));
 $vendor = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['vendor'])));
 $amount = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['amount'])));
 $description = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['description'])));
 $budgeted = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['budgetedExpenseYes'])));
 $direct = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['directDeposit'])));
-$officerName = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['officerName'])));
-$officerPosition = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['officerPosition'])));
+$officer_name = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['officerName'])));
+$officer_position = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['officerPosition'])));
 $address = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['address'])));
+
 $receipt = $_FILES['receipt'];
 $docs = $_FILES['docs'];
 
@@ -84,16 +88,16 @@ if (!preg_match("/^[\w\ \'\.]{1,128}$/", $position)) {
     die();
 }
 
-// Check email
-if(!preg_match('/^[\w\W]+@[\w\W\d]{1,128}$/', $email)) {
-    $result_data->message = 'Your email is invalid. Please use an email in the following format: <>@<>. '
-        . 'Your email is also limited to 128 characters.';
+// Check email address
+if(!preg_match('/^[\w\W]+@[\w\W\d]{1,254}$/', $email)) {
+    $result_data->message = 'Your email address is invalid. Please use an email in the following format: <>@<>. '
+        . 'Your email is also limited to 254 characters.';
     echo json_encode($result_data);
     die();
 }
 
-// Check mId
-if (!preg_match("/^M[0-9]{8}$/", $mId)) {
+// Check M#
+if (!preg_match("/^M[0-9]{8}$/", $m_id)) {
     $result_data->message = 'Your M# is invalid. Please only use official format (Mxxxxxxxx) with an optional '
         . 'apostrophe or period.';
     echo json_encode($result_data);
@@ -102,7 +106,7 @@ if (!preg_match("/^M[0-9]{8}$/", $mId)) {
 
 // Check date
 if(!preg_match('/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/', $date)) {
-    $result_data->message = 'Your expenditure date is invalid. Please format it in the following way: yyyy/mm/dd.';
+    $result_data->message = 'Your expenditure date is invalid. Please format it in the following way: mm/dd/yyyy.';
     echo json_encode($result_data);
     die();
 }
@@ -123,35 +127,59 @@ if (!preg_match("/^[0-9]{0,10}.[0-9]{0,10}$/", $amount)) {
 }
 
 // Check description
-if (!preg_match("/^[\w\ \'\.]{1,128}$/", $description)) {
+if (!preg_match("/^[\w\ \'\.]{1,500}$/", $description)) {
     $result_data->message = 'Your description is invalid. Please only use latin characters a-z with an optional '
         . 'apostrophe or period. Your description is also limited to 128 characters.';
     echo json_encode($result_data);
     die();
 }
 
-// // Check receipt file
-// $receipt_check_result = checkFile($receipt, RECEIPT_MAX_FILE_SIZE, $receipt_mime_types);
-// if (!$receipt_check_result->file_safe) {
-//     $result_data->message = $receipt_check_result->message;
-//     echo json_encode($result_data);
-//     die();
-// }
+// Check receipt file
+$receipt_check_result = checkFile($receipt, RECEIPT_MAX_FILE_SIZE, $receipt_mime_types);
+if (!$receipt_check_result->file_safe) {
+    $result_data->message = $receipt_check_result->message;
+    echo json_encode($result_data);
+    die();
+}
 
-// // Check docs file
-// $docs_check_result = checkFile($docs, ATTENDANCE_MAX_FILE_SIZE, $docs_mime_types);
-// if (!$docs_check_result->file_safe) {
-//     $result_data->message = $docs_check_result->message;
-//     echo json_encode($result_data);
-//     die();
-// }
+// Check docs file
+$docs_check_result = checkFile($docs, ATTENDANCE_MAX_FILE_SIZE, $docs_mime_types);
+if (!$docs_check_result->file_safe) {
+    $result_data->message = $docs_check_result->message;
+    echo json_encode($result_data);
+    die();
+}
+
+// Check officer name (if provided)
+if ($officer_name && !preg_match("/^[\w\ \'\.]{1,128}$/", $officer_name)) {
+    $result_data->message = 'The officer name that you provided is invalid. Please only use latin characters a-z with an optional '
+        . 'apostrophe or period. Your officer name is also limited to 128 characters.';
+    echo json_encode($result_data);
+    die();
+}
+
+// Check officer position (if provided)
+if ($officer_position && !preg_match("/^[\w\ \'\.]{1,128}$/", $officer_position)) {
+    $result_data->message = 'The officer position that you provided is invalid. Please only use latin characters a-z with an optional '
+        . 'apostrophe or period. Your officer position is also limited to 128 characters.';
+    echo json_encode($result_data);
+    die();
+}
+
+// Check mailing address (if provided)
+if ($address && !preg_match("/^[A-Za-z0-9'\.\-\s\,]{1,254}$/", $address)) {
+    $result_data->message = 'The address that you provided is invalid. Please only use latin characters a-z and numbers with optional '
+        . 'apostrophes or periods. Your address is also limited to 254 characters.';
+    echo json_encode($result_data);
+    die();
+}
 
 // Get admin data
 $admin_name  = '';
 $admin_email = '';
 $super_email = '';
 
-// Get filename
+// Get file names
 $receiptText = $receipt['name'];
 $docsText = $docs['name'];
 
@@ -176,8 +204,8 @@ if ($admin_email === '' || $admin_name === '' || $super_email === '') {
 // Insert form data
 $sql = 'INSERT INTO `reimbursement_main` (`name`, `position`, `email`, `mid`, `date`, `vendor`, `amount`, `description`, `status`,`type`,
 `receipt_name`,`document_name`,`officer_name`,`officer_position`,`address`)'
-. "VALUES ('".$name."','".$position."','".$email."','".$mId."','".$date."','".$vendor."','".$amount."','".$description."','".$budgeted."',
-'".$direct."','".$receiptText."','".$docsText."','".$officerName."','".$officerPosition."','".$address."')";
+. "VALUES ('".$name."','".$position."','".$email."','".$m_id."','".$date."','".$vendor."','".$amount."','".$description."','".$budgeted."',
+'".$direct."','".$receiptText."','".$docsText."','".$officer_name."','".$officer_position."','".$address."')";
 
 $result = $mysqli->query($sql);
 
@@ -195,7 +223,7 @@ try {
     $mail->Subject = "Reimbursement Request Recieved";
 
     $email_msg = "Hello " . $name . ", \n \n";
-    $email_msg .= "This email is to confirm we have recieved your reimbursement request. ";
+    $email_msg .= "This email is to confirm that we have recieved your reimbursement request. ";
     $email_msg .= "Your transaction will be evaluated and if we require any further information, we will contact you. \n \n";
     $email_msg .= "If you have any questions, feel free to reply back to this email. \n \n";
     $email_msg .= "Best regards, \n";
@@ -218,18 +246,18 @@ try {
     $mail_admin->Subject = "Reimbursement Request Recieved";
 
     $email_msg  = "Hello " . $admin_name . ", \n \n";
-    $email_msg .= "A reimbursement request has been created with the following information: \n";
+    $email_msg .= "A reimbursement request has been created with the following information: \n \n";
     $email_msg .= "Name: " . $name . " \n";
     $email_msg .= "Position: " . $position . " \n";
     $email_msg .= "Email: " . $email . " \n";
-    $email_msg .= "M#: " . $mId . " \n";
+    $email_msg .= "M#: " . $m_id . " \n";
     $email_msg .= "Date: " . $date . " \n";
     $email_msg .= "Vendor: " . $vendor . " \n";
     $email_msg .= "Amount: " . $amount . " \n";
     $email_msg .= "Description: " . $description . " \n";
     $email_msg .= "Status: " . $budgeted . " \n";
-    $email_msg .= "Approved By: " . $officerName . " \n";
-    $email_msg .= "Approver Title: " . $officerPosition . " \n";
+    $email_msg .= "Approved By: " . $officer_name . " \n";
+    $email_msg .= "Approver Title: " . $officer_position . " \n";
     $email_msg .= "Delivery Type: " . $direct . " \n";
     $email_msg .= "Delivery Address: " . $address . " \n";
     $email_msg .= "Supporting documents are attached to this email. ";
