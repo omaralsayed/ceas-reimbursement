@@ -47,28 +47,20 @@ const checkFile = function checkFileMissing(fileField) {
  * @param {Element} vendor - The vendor field to validate.
  * @param {Element} amount - The amount field to validate.
  * @param {Element} description - The description field to validate.
- * @param {Element} budgeted - The budgeted field to validate.
- * @param {Element} direct - The direct field to validate.
- * @param {Element} receipt - The receipt field to validate.
- * @param {Element} docs - The docs field to validate.
  * @returns {boolean} If any of the fields are missing.
  */
-const validateData = function validateDataForMissingValues(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
+const validateData = function validateDataForMissingValues(name, position, email, mId, date, vendor, amount, description) {
   let isFieldMissing = false;
   const missingItems = [];
 
-  // missingItems.push(checkField(name));
-  // missingItems.push(checkField(position));
-  // missingItems.push(checkField(email));
-  // missingItems.push(checkField(mId));
-  // missingItems.push(checkField(date));
-  // missingItems.push(checkField(vendor));
-  // missingItems.push(checkField(amount));
-  // missingItems.push(checkField(description));
-  // missingItems.push(checkField(budgeted));
-  // missingItems.push(checkField(direct));
-  // missingItems.push(checkField(receipt));
-  // missingItems.push(checkField(docs));
+  missingItems.push(checkField(name));
+  missingItems.push(checkField(position));
+  missingItems.push(checkField(email));
+  missingItems.push(checkField(mId));
+  missingItems.push(checkField(date));
+  missingItems.push(checkField(vendor));
+  missingItems.push(checkField(amount));
+  missingItems.push(checkField(description));
 
   if (missingItems.includes(true)) {
     isFieldMissing = true;
@@ -187,7 +179,7 @@ const sendRequest = function sendRequestData(name, position, email, mId, date, v
  * @param {Element} docs - The docs field to validate and send.
  */
 export default function reserveTicket(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
-  const isMissing = validateData(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs);
+  const isMissing = validateData(name, position, email, mId, date, vendor, amount, description);
   if (!isMissing) {
     sendRequest(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs);
   }

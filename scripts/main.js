@@ -1,3 +1,4 @@
+import displayWarning from './warning-view.js';
 import sendRequest from './reserve.js';
 
 const formBudgetedExpenseYes = document.querySelector('.intro #budgeted-expense-yes');
@@ -27,8 +28,9 @@ const address = document.getElementById('address');
 const receiptImage = document.getElementById('receipt-image');
 const supportingDocuments = document.getElementById('supporting-documents');
 
-const xmlHttp = new XMLHttpRequest();
-
+/**
+ * Hide officer information fields.
+ */
 formBudgetedExpenseYes.onclick = function formBudgetedExpenseYesButtonOnclick() {
   formOfficerName.style.visibility = 'hidden';
   formOfficerPosition.style.visibility = 'hidden';
@@ -45,6 +47,9 @@ formBudgetedExpenseYes.onclick = function formBudgetedExpenseYesButtonOnclick() 
   formOfficerPosition.style.padding = '0';
 };
 
+/**
+ * Show officer information fields.
+ */
 formBudgetedExpenseNo.onclick = function formBudgetedExpenseNoButtonOnclick() {
   formOfficerName.style.visibility = 'visible';
   formOfficerPosition.style.visibility = 'visible';
@@ -61,6 +66,9 @@ formBudgetedExpenseNo.onclick = function formBudgetedExpenseNoButtonOnclick() {
   formOfficerPosition.style.padding = '12px 0px';
 };
 
+/**
+ * Hide address information field.
+ */
 formDirectDeposit.onclick = function formBudgetedExpenseYesButtonOnclick() {
   formAddress.style.visibility = 'hidden';
   formCheck.checked = false;
@@ -71,6 +79,9 @@ formDirectDeposit.onclick = function formBudgetedExpenseYesButtonOnclick() {
   formAddress.style.padding = '0';
 };
 
+/**
+ * Show address information field.
+ */
 formCheck.onclick = function formBudgetedExpenseNoButtonOnclick() {
   formAddress.style.visibility = 'visible';
   formDirectDeposit.checked = false;
@@ -81,12 +92,18 @@ formCheck.onclick = function formBudgetedExpenseNoButtonOnclick() {
   formAddress.style.padding = '12px 0px';
 };
 
+/**
+ * Alter file upload display text with receipt filename.
+ */
 formReceiptImage.onchange = function receiptImageOnChange() {
   let fileName = '';
   fileName = this.files[0].name;
   document.getElementById('upload-receipt-text').innerText = ' ' + fileName;
 };
 
+/**
+ * Alter file upload display text with document filename.
+ */
 formDocumentsFile.onchange = function documentsFileOnChange() {
   let fileName = '';
   fileName = this.files[0].name;
@@ -94,16 +111,17 @@ formDocumentsFile.onchange = function documentsFileOnChange() {
 };
 
 /**
- * Update tag text with response
+ * Access get_info.php response and alter the form description.
  */
-xmlHttp.onreadystatechange = function() {
-  if (this.readyState == 4 && this.status == 200) {
-    document.getElementById('admin-email').innerText = this.response.replace(/['"]+/g, '');
+fetch('../api/get_info.php')
+  .then(response => response.json())
+  // Update tag text with response body
+  .then(body => document.getElementById('admin-email').innerText = body.replace(/['"]+/g, ''))
+  .catch(() => {
+    displayWarning('Something went wrong while retrieving treasurer information. Please contact us with a screenshot of this ' 
+    + 'warning. You may dismiss the warning and carry on.');
   }
-};
-
-xmlHttp.open('GET', '../api/get_info.php', true);
-xmlHttp.send();
+);
 
 formSubmitButton.onclick = function formSubmitButtonOnclick() {
   sendRequest(name, position, email, mId, date, vendor, amount, description, officerName, officerPosition,
