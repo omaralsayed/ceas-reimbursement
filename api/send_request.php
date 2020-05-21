@@ -129,7 +129,7 @@ if (!preg_match("/^[0-9]{0,10}.[0-9]{0,10}$/", $amount)) {
 // Check description
 if (!preg_match("/^[\w\ \'\.]{1,500}$/", $description)) {
     $result_data->message = 'Your description is invalid. Please only use latin characters a-z with an optional '
-        . 'apostrophe or period. Your description is also limited to 128 characters.';
+        . 'apostrophe or period. Your description is also limited to 500 characters.';
     echo json_encode($result_data);
     die();
 }
@@ -167,9 +167,9 @@ if ($officer_position && !preg_match("/^[\w\ \'\.]{1,128}$/", $officer_position)
 }
 
 // Check mailing address (if provided)
-if ($address && !preg_match("/^[A-Za-z0-9'\.\-\s\,]{1,254}$/", $address)) {
+if ($address && !preg_match("/^[A-Za-z0-9'\.\-\s\,]{1,128}$/", $address)) {
     $result_data->message = 'The address that you provided is invalid. Please only use latin characters a-z and numbers with optional '
-        . 'apostrophes or periods. Your address is also limited to 254 characters.';
+        . 'apostrophes or periods. Your address is also limited to 128 characters.';
     echo json_encode($result_data);
     die();
 }
