@@ -1,11 +1,14 @@
 # CEAS Reimbursement
-The reimbursement form will allow students to submit reimbursement requests to [CEAS Tribunal](https://tribunal.uc.edu), an engineering student council organization at University of Cincinnati.
+The reimbursement form allows students to submit reimbursement requests to the [College of Engineering and Applied Science Tribunal](https://tribunal.uc.edu), an engineering student council organization at University of Cincinnati. This form streamlines the reimbursement process and can be completed within minutes from any computer or mobile device.
 
 ## Use Case
 ### Data Flow
-The form's data such as the student's name, email, and payment information will be sent to the admin email. The admin email will be stored in a database table along with other information such as date, month, and year of the request. Also, the table will store the payment amount required, the recipient, and the payment title.
+The form's data such as the student's information, expenditure information, and supporting files will be sent to the treasurer's email. The data will be stored in a database table along with other information such as the date of the request.
 
-## Getting Started
+## Overview
+![CEAS Reimbursement Overview](images/overview.PNG)
+
+## Getting Started 🚀
 ### Initial Set Up
 Prerequisites:
 - MAMP
