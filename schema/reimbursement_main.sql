@@ -28,21 +28,21 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `reimbursement_main` (
   `uid` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `position` text NOT NULL,
-  `email` text NOT NULL,
-  `mid` text NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `position` varchar(128) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `mid` varchar(9) NOT NULL,
   `date` date NOT NULL,
-  `vendor` text NOT NULL,
-  `amount` int(11) NOT NULL,
-  `description` text NOT NULL,
-  `status` text NOT NULL,
-  `type` text NOT NULL,
-  `receipt_name` text,
-  `document_name` text,
-  `officer_name` text,
-  `officer_position` text,
-  `address` text
+  `vendor` varchar(128) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `description` varchar(128) NOT NULL,
+  `status` varchar(128) NOT NULL,
+  `type` varchar(128) NOT NULL,
+  `receipt_name` varchar(254) DEFAULT NULL,
+  `document_name` varchar(254) DEFAULT NULL,
+  `officer_name` varchar(128) DEFAULT NULL,
+  `officer_position` varchar(128) DEFAULT NULL,
+  `address` varchar(254) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

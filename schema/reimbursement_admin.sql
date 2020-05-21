@@ -27,17 +27,38 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `reimbursement_admin` (
-  `admin_name` text NOT NULL,
-  `admin_email` text NOT NULL,
-  `super_email` text NOT NULL
+  `uid` int(11) NOT NULL,
+  `admin_name` varchar(128) NOT NULL,
+  `admin_email` varchar(254) NOT NULL,
+  `super_email` varchar(254) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `reimbursement_admin`
 --
 
-INSERT INTO `reimbursement_admin` (`admin_name`, `admin_email`, `super_email`) VALUES
-('Admin', 'admin@mail.uc.edu', 'super@mail.uc.edu');
+INSERT INTO `reimbursement_admin` (`uid`, `admin_name`, `admin_email`, `super_email`) VALUES
+(1, 'Admin', 'admin@mail.uc.edu', 'super@mail.uc.edu');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `reimbursement_admin`
+--
+ALTER TABLE `reimbursement_admin`
+  ADD UNIQUE KEY `uid` (`uid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `reimbursement_admin`
+--
+ALTER TABLE `reimbursement_admin`
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
