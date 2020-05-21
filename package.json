@@ -1,6 +1,6 @@
 {
   "name": "ceas-reimbursement",
-  "description": "A form to allow CEAS tribunal members to submit reimbursement requests",
+  "description": "A form to allow CEAS Tribunal members to submit reimbursement requests",
   "homepage": "https://github.com/omaralsayed/ceas-reimbursement",
   "author": {
     "name": "CEAS Tribunal",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "lodash.template": "^4.5.0",
-    "npm": "^6.13.7"
+    "npm": "^6.14.5"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
