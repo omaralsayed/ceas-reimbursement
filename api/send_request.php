@@ -1,5 +1,6 @@
 <?php
 error_reporting(-1);
+ini_set('display_errors', '1');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -9,6 +10,7 @@ require_once('mysqli.php');
 require_once('check_file.php');
 require_once('PHPMailer/Exception.php');
 require_once('PHPMailer/PHPMailer.php');
+require_once('fpdm/fpdm.php');
 
 DEFINE('RECEIPT_MAX_FILE_SIZE', 6);
 DEFINE('ATTENDANCE_MAX_FILE_SIZE', 6);
@@ -216,6 +218,47 @@ if (!$result) {
     die();
 }
 
+// Fill PDF
+$output_pdf_path = '../documents/reimbursement-' . uniqid() . '.pdf';
+
+try {
+    $fields = array(
+        'name' => $name,
+        'title' => $position,
+        'date_submitted' => date("m/d/Y"),
+        'm_number' => $m_id,
+        'expenditure_date' => date("m/d/Y", strtotime($date)),
+        'expenditure_vendor' => $vendor,
+        'expenditure_amount' => $amount,
+        'expenditure_description' => $description,
+        'approver_name' => $officer_name,
+        'approver_position' => $officer_position,
+        'address' => $address,
+    );
+
+    if ($budgeted) {
+        $fields['checkbox_budgeted_yes'] = true;
+    } else {
+        $fields['checkbox_budgeted_no'] = true;
+    }
+    
+    if ($address) {
+        $fields['checkbox_payment_method_check'] = true;
+    } else {
+        $fields['checkbox_payment_method_dd'] = true;
+    }
+    
+    $pdf = new FPDM('../documents/reimbursement-unfilled.pdf');
+    $pdf->useCheckboxParser = true;
+    $pdf->Load($fields, true);
+    $pdf->Merge();
+    $pdf->Output('F', $output_pdf_path);
+} catch (Exception $e) {
+    $result_data->message = 'Error occurred while generating the reimbursement PDF. Please email the admin in the description notifying of this error.';
+    echo json_encode($result_data);
+    die();
+}
+
 // Email user
 $mail = new PHPMailer(true);
 
@@ -251,7 +294,7 @@ try {
     $email_msg .= "Position: " . $position . " \n";
     $email_msg .= "Email: " . $email . " \n";
     $email_msg .= "M#: " . $m_id . " \n";
-    $email_msg .= "Date: " . $date . " \n";
+    $email_msg .= "Date: " . date("m/d/Y", strtotime($date)) . " \n";
     $email_msg .= "Vendor: " . $vendor . " \n";
     $email_msg .= "Amount: " . $amount . " \n";
     $email_msg .= "Description: " . $description . " \n";
@@ -259,7 +302,7 @@ try {
     $email_msg .= "Approved By: " . $officer_name . " \n";
     $email_msg .= "Approver Title: " . $officer_position . " \n";
     $email_msg .= "Delivery Type: " . $direct . " \n";
-    $email_msg .= "Delivery Address: " . $address . " \n";
+    $email_msg .= "Delivery Address: " . $address . " \n \n";
     $email_msg .= "Supporting documents are attached to this email. ";
     $email_msg .= "Please review these files to ensure that they have paid the correct amount. \n \n";
     $email_msg .= "Best regards, \n";
@@ -278,9 +321,19 @@ try {
     $mime = finfo_file($finfo, $docs['tmp_name']);
     $mail_admin->AddAttachment($docs['tmp_name'], $docs['name'], 'base64', $mime);
 
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $output_pdf_path);
+    $mail_admin->AddAttachment($output_pdf_path, 'reimbursement.pdf', 'base64', $mime);
+
     $mail_admin->send();
 } catch (Exception $e) {
     $result_data->message = 'Error occurred while sending the admin the confirmation email. Please email the admin in the description notifying of this error.';
+    echo json_encode($result_data);
+    die();
+}
+
+if (!unlink($output_pdf_path)) {
+    $result_data->message = 'Error occurred while trying to delete the temporary reimbursement file. Please email the admin in the description notifying of this error.';
     echo json_encode($result_data);
     die();
 }

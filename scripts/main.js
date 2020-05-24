@@ -1,5 +1,5 @@
 import displayWarning from './warning-view.js';
-import sendRequest from './reserve.js';
+import reserveTicket from './reserve.js';
 
 const formBudgetedExpenseYes = document.querySelector('.intro #budgeted-expense-yes');
 const formBudgetedExpenseNo = document.querySelector('.intro #budgeted-expense-no');
@@ -20,13 +20,6 @@ const date = document.getElementById('date');
 const vendor = document.getElementById('vendor');
 const amount = document.getElementById('amount');
 const description = document.getElementById('description');
-const officerName = document.getElementById('officer-name');
-const officerPosition = document.getElementById('officer-position');
-const directDeposit = document.getElementById('direct-deposit');
-const check = document.getElementById('check');
-const address = document.getElementById('address');
-const receiptImage = document.getElementById('receipt-image');
-const supportingDocuments = document.getElementById('supporting-documents');
 
 /**
  * Hide officer information fields.
@@ -113,17 +106,15 @@ formDocumentsFile.onchange = function documentsFileOnChange() {
 /**
  * Access get_info.php response and alter the form description.
  */
-fetch('../api/get_info.php')
+fetch('api/get_info.php')
   .then(response => response.json())
   // Update tag text with response body
   .then(body => document.getElementById('admin-email').innerText = body.replace(/['"]+/g, ''))
   .catch(() => {
     displayWarning('Something went wrong while retrieving treasurer information. Please contact us with a screenshot of this ' 
     + 'warning. You may dismiss the warning and carry on.');
-  }
-);
+  });
 
 formSubmitButton.onclick = function formSubmitButtonOnclick() {
-  sendRequest(name, position, email, mId, date, vendor, amount, description, officerName, officerPosition,
-    directDeposit, check, receiptImage, supportingDocuments, address);
+  reserveTicket(name, position, email, mId, date, vendor, amount, description);
 };

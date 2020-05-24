@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex"> <!-- Block search indexing -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A form to allow CEAS Tribunal members to submit reimbursement requests">
-    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="build/style.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
 </head>
 <body>
@@ -66,13 +66,16 @@
                 <p> The receipt <b>must be</b> itemized (showing each item you paid for). You can either take a picture of it or scan it using a scanner. </p>
                 <label class="file-upload">
                     <input type="file" id="receipt-image" name="receipt-image" accept="image/png, image/jpeg">
-                    <div class="file-text-receipt"><i class="fas fa-file-upload"></i><span id="upload-receipt-text"> Click to Upload </span></div>
+                    <div class="file-text file-text-receipt"><i class="fas fa-file-upload"></i><span id="upload-receipt-text"> Click to Upload </span></div>
                 </label>
                 <label> Supporting Reimbursement Documents </label>
-                <p> Please attach any supporting documents to show how your purchased was used. For example, if you bought food, attach the attendence sheet for the meeting, or the email you sent to the college advertising the meeting. </p>
+                <p>
+                    Please attach any supporting document to show how your purchased was used. For example, if you bought food, attach the attendence sheet for the meeting, or the email you sent to the college advertising the meeting.
+                    If you have multiple documents, you may combine them into a single PDF.
+                </p>
                 <label class="file-upload">
                     <input type="file" id="supporting-documents" name="supporting-documents" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, image/png, image/jpeg">
-                    <div class="file-text-docs"><i class="fas fa-file-upload"></i><span id="upload-doc-text"> Click to Upload </span></div>
+                    <div class="file-text file-text-docs"><i class="fas fa-file-upload"></i><span id="upload-doc-text"> Click to Upload </span></div>
                 </label>
                 <input type="button" value="Submit" id="submit-button">
                 <div class="loader lds-ellipsis"><div></div><div></div><div></div><div></div></div>
@@ -89,6 +92,6 @@
         <p> University of Cincinnati | © 2020 College of Engineering and Applied Science Tribunal </p>
         <p> For any questions or comments, contact us at uc.eas.tribunal@gmail.com. </p>      
     </footer>
-    <script src="scripts/main.js" type=module></script>
+    <script src="build/main.min.js"></script>
 </body>
 </html>

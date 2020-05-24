@@ -39,15 +39,6 @@ function scripts() {
 			input: './scripts/main.js',
 			format: 'cjs',
 		}))
-		.pipe(babel({
-			presets: [
-				['@babel/preset-env', {
-					useBuiltIns: 'entry',
-					corejs: 3,
-				}],
-			],
-		}))
-		.pipe(uglify())
 		.pipe(rename('main.min.js'))
 		.pipe(gulp.dest('./build'));
 }
