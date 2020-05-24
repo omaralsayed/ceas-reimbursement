@@ -108,7 +108,7 @@ if (!preg_match("/^M[0-9]{8}$/", $m_id)) {
 
 // Check date
 if(!preg_match('/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/', $date)) {
-    $result_data->message = 'Your expenditure date is invalid. Please format it in the following way: mm/dd/yyyy.';
+    $result_data->message = 'Your expenditure date is invalid. Please format it in the following way: YYYY-MM-DD.';
     echo json_encode($result_data);
     die();
 }
