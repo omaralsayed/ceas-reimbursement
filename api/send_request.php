@@ -30,8 +30,8 @@ $budgeted = false;
 $direct = false;
 
 // Initialize document variables
-$receipt = '';
-$docs = '';
+$receipt = null;
+$docs = null;
 
 $name = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['name'])));
 $position = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['position'])));
@@ -46,9 +46,10 @@ $direct = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['directDepos
 $officer_name = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['officerName'])));
 $officer_position = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['officerPosition'])));
 $address = mysqli_real_escape_string($mysqli, strip_tags(trim($_POST['address'])));
-
 $receipt = $_FILES['receipt'];
-$docs = $_FILES['docs'];
+if (isset($_FILES['docs'])) {
+    $docs = $_FILES['docs'];
+}
 
 $receipt_mime_types = array(
     'pdf'  => 'application/pdf',
@@ -145,11 +146,13 @@ if (!$receipt_check_result->file_safe) {
 }
 
 // Check docs file
-$docs_check_result = checkFile($docs, ATTENDANCE_MAX_FILE_SIZE, $docs_mime_types);
-if (!$docs_check_result->file_safe) {
-    $result_data->message = $docs_check_result->message;
-    echo json_encode($result_data);
-    die();
+if ($docs) {
+    $docs_check_result = checkFile($docs, ATTENDANCE_MAX_FILE_SIZE, $docs_mime_types);
+    if (!$docs_check_result->file_safe) {
+        $result_data->message = $docs_check_result->message;
+        echo json_encode($result_data);
+        die();
+    }
 }
 
 // Check officer name (if provided)
@@ -182,8 +185,11 @@ $admin_email = '';
 $super_email = '';
 
 // Get file names
-$receiptText = $receipt['name'];
-$docsText = $docs['name'];
+$receiptText = "reciept-" . $receipt['name'];
+$docsText = '';
+if ($docs) {
+    $docsText = "supporting-docs-" . $docs['name'];
+}
 
 $sql = 'SELECT `admin_name`, `admin_email`, `super_email` FROM `reimbursement_admin`';
 $result = $mysqli->query($sql);
@@ -315,11 +321,13 @@ try {
     // Attach files
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $mime = finfo_file($finfo, $receipt['tmp_name']);
-    $mail_admin->AddAttachment($receipt['tmp_name'], $receipt['name'], 'base64', $mime);
+    $mail_admin->AddAttachment($receipt['tmp_name'], $receiptText, 'base64', $mime);
 
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $mime = finfo_file($finfo, $docs['tmp_name']);
-    $mail_admin->AddAttachment($docs['tmp_name'], $docs['name'], 'base64', $mime);
+    if ($docs) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $docs['tmp_name']);
+        $mail_admin->AddAttachment($docs['tmp_name'], $docsText, 'base64', $mime);
+    }
 
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $mime = finfo_file($finfo, $output_pdf_path);
