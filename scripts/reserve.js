@@ -66,7 +66,7 @@ const validateData = function validateDataForMissingValues(name, position, email
  * @param {Element} receipt - The receipt field to validate and send.
  * @param {Element} docs - The docs field to validate and send.
  */
-const sendRequest = function sendRequestData(name, position, email, mId, date, vendor, amount, description) {
+const sendRequest = function sendRequestData(name, position, email, mId, date, vendor, amount, description, reciept, supportingDocs) {
   let officerName = '';
   let officerPosition = '';
   let budgeted;
@@ -113,8 +113,8 @@ const sendRequest = function sendRequestData(name, position, email, mId, date, v
     officerName: officerName,
     officerPosition: officerPosition,
     address: formAddress.value,
-    receipt: formReceipt.files[0],
-    docs: formSupport.files[0]
+    receipt: reciept,
+    docs: supportingDocs
   };
 
   const submissionFormData = new FormData();
@@ -167,8 +167,42 @@ export default function reserveTicket(
   amount,
   description,
 ) {
-  const isMissing = validateData(name, position, email, mId, date, vendor, amount, description);
-  if (!isMissing) {
-    sendRequest(name, position, email, mId, date, vendor, amount, description);
+  const fileSizeLimitMB = 6;
+  const fileSizeLimit = fileSizeLimitMB * 1024 * 1024;
+  const formReceipt = document.querySelector('.intro #receipt-image');
+  const formSupport = document.querySelector('.intro #supporting-documents');
+
+  if (formReceipt.files === null || formReceipt.files.length === 0) {
+    displayWarning('Please attach a reciept before submitting.');
+  } else if (formReceipt.files[0].size > fileSizeLimit) {
+    displayWarning(`Please choose a reciept under ${fileSizeLimitMB}MB.`);
+  } else if (
+    formSupport.files !== null && formSupport.files.length > 0
+    && formSupport.files[0].size > fileSizeLimit
+  ) {
+    displayWarning(`Please choose supporting documents under ${fileSizeLimitMB}MB.`);
+  } else {
+    const isMissing = validateData(name, position, email, mId, date, vendor, amount, description);
+
+    const recieptFile = formReceipt.files[0];
+    let supportingFile = null;
+    if (formSupport.files.length > 0) {
+      [supportingFile] = formSupport.files;
+    }
+
+    if (!isMissing) {
+      sendRequest(
+        name,
+        position,
+        email,
+        mId,
+        date,
+        vendor,
+        amount,
+        description,
+        recieptFile,
+        supportingFile
+      );
+    }
   }
 }
