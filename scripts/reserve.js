@@ -6,7 +6,6 @@ import displayWarning from './warning-view.js';
  * @returns {boolean} If the field is missing.
  */
 const checkField = function checkForMissingField(field) {
-  console.log(field);
   let isFieldMissing = false;
 
   if (field.value === '') {
@@ -17,24 +16,6 @@ const checkField = function checkForMissingField(field) {
   }
 
   return isFieldMissing;
-};
-
-/**
- * Checks if a file field is missing a file and highlights the field is so.
- * @param {Element} fileField - The field to check.
- * @returns {boolean} If the file field is missing.
- */
-const checkFile = function checkFileMissing(fileField) {
-  let isFileMissing = false;
-
-  if (fileField.files.length === 0) {
-    fileField.classList.add('missing');
-    isFileMissing = true;
-  } else if (fileField.classList.contains('missing')) {
-    fileField.classList.remove('missing');
-  }
-
-  return isFileMissing;
 };
 
 /**
@@ -85,9 +66,11 @@ const validateData = function validateDataForMissingValues(name, position, email
  * @param {Element} receipt - The receipt field to validate and send.
  * @param {Element} docs - The docs field to validate and send.
  */
-const sendRequest = function sendRequestData(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
+const sendRequest = function sendRequestData(name, position, email, mId, date, vendor, amount, description) {
   let officerName = '';
   let officerPosition = '';
+  let budgeted;
+  let direct;
 
   const formSubmitButton = document.querySelector('.intro #submit-button');
   const formLoader = document.querySelector('.intro .loader');
@@ -109,7 +92,7 @@ const sendRequest = function sendRequestData(name, position, email, mId, date, v
     officerName = formOfficerName.value;
     officerPosition = formOfficerPosition.value;
   }
-  
+
   if (formAddress.style.visibility == 'hidden') {
     direct = 'Direct Deposit';
   } else {
@@ -147,7 +130,7 @@ const sendRequest = function sendRequestData(name, position, email, mId, date, v
     .then(response => response.json())
     .then((data) => {
       if (data.status === 'success') {
-        document.querySelector('.intro form').style.display = 'none';
+        document.querySelector('.intro .request-form').style.display = 'none';
         document.querySelector('.reserved-ticket').style.display = 'block';
         document.querySelector('.reserved-ticket .reserved-email').textContent = email.value;
       } else {
@@ -173,14 +156,19 @@ const sendRequest = function sendRequestData(name, position, email, mId, date, v
  * @param {Element} vendor - The vendor field to validate and send.
  * @param {Element} amount - The amount field to validate and send.
  * @param {Element} description - The description field to validate and send.
- * @param {Element} budgeted - The budgeted field to validate and send.
- * @param {Element} direct - The direct field to validate and send.
- * @param {Element} receipt - The receipt field to validate and send.
- * @param {Element} docs - The docs field to validate and send.
  */
-export default function reserveTicket(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs) {
+export default function reserveTicket(
+  name,
+  position,
+  email,
+  mId,
+  date,
+  vendor,
+  amount,
+  description,
+) {
   const isMissing = validateData(name, position, email, mId, date, vendor, amount, description);
   if (!isMissing) {
-    sendRequest(name, position, email, mId, date, vendor, amount, description, budgeted, direct, receipt, docs);
+    sendRequest(name, position, email, mId, date, vendor, amount, description);
   }
 }

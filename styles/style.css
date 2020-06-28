@@ -1,7 +1,6 @@
-/* Google Fonts API Imports */
-
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300');
+/* Google Fonts API Imports */
 
 /* General */
 
@@ -27,7 +26,7 @@ body {
 .intro {
   min-height: 100vh;
   background: #cb2d3e center; /* Fallback for old browsers */
-  background: linear-gradient(to top, #ef473a, #cb2d3e), url(../images/lindner.jpg); /* W3C */
+  background: linear-gradient(to top, #ef473a, #cb2d3e);
   background-size: cover;
   background-blend-mode: darken;
   padding-bottom: 20px;
@@ -216,22 +215,24 @@ form input[type=file] {
 }
 
 form .file-upload {
-  border: 2px solid #e00122;
   display: block;
-  padding: 6px 0;
+  padding: 10px 0;
   cursor: pointer;
-  text-align: center;
   margin: 20px auto 4px;
   width: 90%;
   text-transform: uppercase;
   transition: background-color 0.6s, colors 0.6s;
-  border-radius: 4px;
-  color: #e00122;
+  color: #717171;
+  background: #eee;
 }
 
 form .file-upload:hover {
-  background-color: #ffe9ed;
+  background: #ddd;
   cursor: pointer;
+}
+
+form .file-upload .file-text {
+  padding: 0 20px;
 }
 
 @media screen and (max-width: 600px) {
@@ -244,7 +245,7 @@ form .file-upload:hover {
   margin: 10px 0;
   position: relative;
   border: 2px solid #ccc;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .radio-button label {
@@ -293,7 +294,7 @@ form .file-upload:hover {
 
 .radio-group {
   padding: 0 16px;
-  max-width: 500px;
+  width: 90%;
   margin: 20px auto;
   line-height: 20px;
 }
@@ -349,13 +350,14 @@ footer p:nth-of-type(2) {
 }
 
 .warning {
-  position: absolute;
-  background: #1e88e5;
+  position: fixed;
+  z-index: 5;
+  background: #ffffff;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px;
   font-size: 14px;
   padding: 0px 16px;
   max-width: 400px;
-  border-radius: 8px;
+  border-top: 6px solid #ffc300;
   bottom: 30%;
   left: 50%;
   transform: translateX(-50%);
@@ -369,21 +371,22 @@ footer p:nth-of-type(2) {
 }
 
 .warning p {
-  margin: 10px 0 20px;
-  padding: 0;
-  color: #fff;
+  padding: 6px 20px 20px;
+  margin: 0;
+  color: #3f3f3f;
+  width: auto;
 }
 
 .warning .close {
   font-size: 20px;
   padding-top: 20px;
-  color: #fff;
+  color: #3f3f3f;
   cursor: pointer;
   transition: color 0.2s;
 }
 
 .warning .close:hover {
-  color: #80d8ff;
+  color: #ff9e00;
 }
 
 /* Loading symbol from loading.io */
