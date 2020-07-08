@@ -5,11 +5,6 @@ The reimbursement form allows students to submit reimbursement requests to the [
 ### Data Flow
 The form's data such as the student's information, expenditure information, and supporting files will be sent to the treasurer's email. The data will be stored in a database table along with other information such as the date of the request.
 
-## Overview
-Snippet of the file upload section
-
-![CEAS Reimbursement Overview](images/overview.PNG)
-
 ## Getting Started 🚀
 ### Initial Set Up
 Prerequisites:
